@@ -5,7 +5,7 @@ session_start();
  
 // Check if the user is already logged in, if not then redirect him to login page
 if((isset($_SESSION["loggedin"]) === false) || ($_SESSION["loggedin"] === false)){
-    header("location: ./../../login.php");
+    header("location: ./../login.php");
     exit;
 }
 
@@ -28,7 +28,7 @@ else
     echo("No id");
 }
 
-header("location: ./../../catalog_view.php");
+header("location: ./../catalog_view.php");
 exit;
 
 ?>

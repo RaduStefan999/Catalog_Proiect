@@ -212,8 +212,8 @@ mysqli_close($link);
               echo('  
                 <tr>
                   <td>'.$stundent[1].'</td>
-                  <td><button type="button" class="btn btn-warning">Edit</button></td>
-                  <td><a href="server/delete.php/?id='.$stundent[0].'" class="btn btn-danger">Delete</button></td>
+                  <td><a href="catalog_edit.php?id='.$stundent[0].'" class="btn btn-warning">Edit</a></td>
+                  <td><a href="server/delete.php?id='.$stundent[0].'" class="btn btn-danger">Delete</a></td>
                 </tr>
               ');
           }
