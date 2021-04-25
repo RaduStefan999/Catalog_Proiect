@@ -5,7 +5,7 @@ session_start();
  
 // Check if the user is already logged in, if not then redirect him to login page
 if((isset($_SESSION["loggedin"]) === false) || ($_SESSION["loggedin"] === false)){
-    header("location: login.php");
+    header("location: ./login.php");
     exit;
 }
 

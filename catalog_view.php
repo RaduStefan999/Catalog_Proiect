@@ -5,7 +5,7 @@ session_start();
  
 // Check if the user is already logged in, if not then redirect him to login page
 if((isset($_SESSION["loggedin"]) === false) || ($_SESSION["loggedin"] === false)){
-    header("location: login.php");
+    header("location: ./login.php");
     exit;
 }
 
@@ -46,10 +46,11 @@ if($_SERVER["REQUEST_METHOD"] == "GET")
 if($_SERVER["REQUEST_METHOD"] == "POST")
 {
 
+  $student_name = trim($_POST["name"]);
+  $student_an = trim($_POST["an"]);
+  $profil_an_id = trim($_POST["profil_an"]);
 
-  $student_name = trim($_POST["student_name"]);
-  $student_an = trim($_POST["student_an"]);
-  $profil_an = trim($_POST["profil_an"]);
+  $add_error = "";
 
   if (empty($student_name))
   {
@@ -61,13 +62,22 @@ if($_SERVER["REQUEST_METHOD"] == "POST")
     $add_error = "Eroare la adaugare";
   }
 
-  if (empty($profil_an))
+  if (empty($profil_an_id))
   {
     $add_error = "Eroare la adaugare";
   }
 
+  if (empty($add_error))
+  {
+    $sql = "INSERT INTO studenti (name, an, profil_an_id) VALUES ('$student_name', '$student_an', '$profil_an_id')";
+    
+    if(!(mysqli_query($link, $sql)))
+    {
+      echo (mysqli_error($link));
+    }
+  }
 
-  $sql = "INSERT INTO studenti (name, an, profil_an) VALUES ('$data', '$darta', '$data')";
+  header("location: catalog_view.php");
 }
 
 mysqli_close($link);
@@ -109,7 +119,7 @@ mysqli_close($link);
 
       <div class="modal-body">
 
-        <form id="add_student_form">
+        <form id="add_student_form" action="<?php echo htmlspecialchars($_SERVER["PHP_SELF"]); ?>" method="post">
 
           <div class="form-group">
             <label for="name" class="col-form-label">Nume:</label>
@@ -203,7 +213,7 @@ mysqli_close($link);
                 <tr>
                   <td>'.$stundent[1].'</td>
                   <td><button type="button" class="btn btn-warning">Edit</button></td>
-                  <td><button type="button" class="btn btn-danger">Delete</button></td>
+                  <td><a href="server/delete.php/?id='.$stundent[0].'" class="btn btn-danger">Delete</button></td>
                 </tr>
               ');
           }
