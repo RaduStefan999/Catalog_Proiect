@@ -33,7 +33,8 @@
 }
 
 .login_errors {
-  color: white;
+  color: red;
+  text-align: center;
 }
 
 .login_back {

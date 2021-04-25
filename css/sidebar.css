@@ -21,6 +21,7 @@
   justify-content: space-between;
   font-size: larger;
   color: white;
+  margin-bottom: 20px;
 }
 
 .sidebar_element > .sidebar_element_name {

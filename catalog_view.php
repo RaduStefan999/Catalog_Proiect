@@ -1,3 +1,16 @@
+<?php
+
+// Initialize the session
+session_start();
+ 
+// Check if the user is already logged in, if not then redirect him to login page
+if((isset($_SESSION["loggedin"]) === false) || ($_SESSION["loggedin"] === false)){
+    header("location: login.php");
+    exit;
+}
+
+?>
+
 <!DOCTYPE html>
 <html lang="en">
 <head>
@@ -33,7 +46,12 @@
 
     <div class="sidebar_element">
       <i class="fa fa-address-book"></i>
-      <a href="./catalog_view.php" class="sidebar_element_name">Lista Studenti</div>
+      <a href="./catalog_view.php" class="sidebar_element_name">Lista Studenti</a>
+    </div>
+
+    <div class="sidebar_element">
+      <i class="fa fa-sign-out"></i>
+      <a href="./server/logout.php" class="sidebar_element_name">Logout</a>
     </div>
 
   </div>
