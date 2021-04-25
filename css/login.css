@@ -1,0 +1,52 @@
+.login_container {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  width: 100vw;
+  height: 100vh;
+}
+
+.form-signin {
+  max-width: 380px;
+  padding: 15px 35px 45px;
+  margin: 0 auto;
+  background-color: orange;
+  border: 1px solid rgba(0, 0, 0, 0.1);
+  border-radius: 20px;
+  box-shadow: 10px 5px 5px orangered;
+}
+
+.form-signin > * {
+  margin-top: 20px;
+}
+
+.form-signin-heading {
+  margin-bottom: 30px;
+  color: white;
+}
+
+.form-control {
+  position: relative;
+  font-size: 16px;
+  height: auto;
+  padding: 10px;
+}
+
+.login_errors {
+  color: white;
+}
+
+.login_back {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.login_back > a {
+  color: white;
+  text-decoration: none;
+}
+
+.login_back > a:hover {
+  text-decoration: underline;
+}
