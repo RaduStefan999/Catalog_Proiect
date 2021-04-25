@@ -1,0 +1,23 @@
+.dashboard_container {
+  width: 100vw;
+  height: 100vh;
+  display: flex;
+  justify-content: flex-end;
+  flex-direction: row;
+}
+
+.dashboard {
+  width: 85vw;
+  margin-top: 120px;
+  padding: 40px;
+}
+
+.dashboard > button {
+  margin-bottom: 40px;
+}
+
+@media screen and (max-width: 900px) {
+  .dashboard {
+    width: 100vw;
+  }
+}
