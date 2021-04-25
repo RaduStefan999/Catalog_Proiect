@@ -11,6 +11,7 @@ if((isset($_SESSION["loggedin"]) === false) || ($_SESSION["loggedin"] === false)
 
 // Include config file
 require_once "./server/config.php";
+require_once "./server/reassociate_profil.php";
 
 $student_list = array();
 $profil_an_list = array();
@@ -75,6 +76,8 @@ if($_SERVER["REQUEST_METHOD"] == "POST")
     {
       echo (mysqli_error($link));
     }
+
+    reassociate_profil($link, mysqli_insert_id($link));
   }
 
   header("location: catalog_view.php");
