@@ -11,41 +11,43 @@ if((isset($_SESSION["loggedin"]) === false) || ($_SESSION["loggedin"] === false)
 
 // Include config file
 require_once "./server/config.php";
+require_once "./server/reassociate_profil.php";
 
 
 $materii_note_list = array();
 $profil_an_list = array();
 $stundet = 0;
 
+$URL_id = 0;
 
+if (isset($_GET['id'])) 
+{
+  $URL_id = $_GET['id'];
+}
+else 
+{
+    echo("No id");
+}
 
 if($_SERVER["REQUEST_METHOD"] == "GET")
 {
   /* Student select */
 
-  if (isset($_GET['id'])) 
+  $sql = "SELECT * FROM studenti WHERE id='$URL_id' ";
+
+  if($result = (mysqli_query($link, $sql)))
   {
-      $id = $_GET['id'];
-
-      $sql = "SELECT * FROM studenti WHERE id='$id' ";
-
-      if($result = (mysqli_query($link, $sql)))
-      {
-        if ($row = mysqli_fetch_row($result))
-        {
-            $stundet  = $row;
-            mysqli_free_result($result);
-        } 
-      }
-      else 
-      {
-        echo (mysqli_error($link));
-      }
-  } 
+    if ($row = mysqli_fetch_row($result))
+    {
+        $stundet  = $row;
+        mysqli_free_result($result);
+    } 
+  }
   else 
   {
-      echo("No id");
+    echo (mysqli_error($link));
   }
+  
 
   /* Profiles list */
 
@@ -61,31 +63,106 @@ if($_SERVER["REQUEST_METHOD"] == "GET")
 
   /* Materii note list */
 
-  if (isset($_GET['id'])) 
-  {
-      $id = $_GET['id'];
+  $sql = "SELECT M.nume_materie, M.nr_credite, SN.nota, SN.promovat, SN.id
+          FROM materii M
+          LEFT JOIN student_has_note SN
+          ON M.id = SN.materie_id
+          WHERE SN.student_id = $URL_id;
+  ";
 
-      $sql = "SELECT M.nume_materie, M.nr_credite, SN.nota, SN.promovat, SN.id
-              FROM materii M
-              LEFT JOIN student_has_note SN
-              ON M.id = SN.materie_id
-              WHERE SN.student_id = $id;
-      ";
+  if ($result = mysqli_query($link, $sql)) {
+    
+    // Fetch one and one row
+    while ($row = mysqli_fetch_row($result)) {
+      $materii_note_list[] = $row;
+    }
+    mysqli_free_result($result);
+  }
+  else
+  {
+    echo (mysqli_error($link));
+  }
+      
+  
+}
+
+if($_SERVER["REQUEST_METHOD"] == "POST")
+{
+
+  $student_name = trim($_POST["name"]);
+  $student_an = trim($_POST["an"]);
+  $profil_an_id = trim($_POST["profil_an"]);
+
+  $add_error = "";
+
+  if (empty($student_name) || !isset($student_an) || !isset($profil_an_id))
+  {
+    $add_error = "Eroare la editare";
+  }
+
+  if (empty($add_error))
+  {
+    $sql = "SELECT profil_an_id FROM studenti WHERE id = $URL_id";
+    
+    $result = mysqli_query($link, $sql);
+    
+    $last_profil_an_id = -1;
+
+    if ($row = mysqli_fetch_row($result))
+    {
+        $last_profil_an_id  = $row[0];
+        mysqli_free_result($result);
+    }
+
+    $sql = "UPDATE studenti SET name = '$student_name', an = $student_an, profil_an_id = $profil_an_id WHERE id = $URL_id";
+    
+    if(!(mysqli_query($link, $sql)))
+    {
+      echo (mysqli_error($link));
+    }
+
+    if ($last_profil_an_id != $profil_an_id)
+    {
+      reassociate_profil($link, $URL_id);
+    }
+    else 
+    {
+      $sql = "SELECT id FROM student_has_note WHERE student_id = $URL_id";
 
       if ($result = mysqli_query($link, $sql)) {
-        
         // Fetch one and one row
         while ($row = mysqli_fetch_row($result)) {
-          $materii_note_list[] = $row;
+          $student_has_note_id = $row[0];
+
+          $nota_form = ($student_has_note_id)."_nota";
+          $promovat_form = ($student_has_note_id)."_promovat";
+
+          $student_nota = trim($_POST[$nota_form]);
+          $student_promovat = trim($_POST[$promovat_form]);
+
+          if (!isset($student_nota) || !isset($student_promovat))
+          {
+            $add_error = "Eroare la editare";
+          }
+          
+          if (empty($add_error))
+          {
+            $sql = "UPDATE student_has_note SET nota = $student_nota, promovat = $student_promovat WHERE id = $student_has_note_id";
+            
+            if(!(mysqli_query($link, $sql)))
+            {
+              echo (mysqli_error($link));
+            }
+          }
         }
+
         mysqli_free_result($result);
       }
-      else
-      {
-        echo (mysqli_error($link));
-      }
-      
-  } 
+    }
+
+  }
+
+  header("location: catalog_view.php");
 }
 
 
@@ -168,7 +245,7 @@ mysqli_close($link);
             
             foreach ($profil_an_list as $profil_an)
             {
-                if ($profil_an[0] == $stundet[2])
+                if ($profil_an[0] == $stundet[3])
                 {
                   echo('<option selected value="'.$profil_an[0].'">'.$profil_an[1].'</option>');
                 }

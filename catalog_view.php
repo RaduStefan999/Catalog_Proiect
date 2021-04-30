@@ -53,17 +53,7 @@ if($_SERVER["REQUEST_METHOD"] == "POST")
 
   $add_error = "";
 
-  if (empty($student_name))
-  {
-    $add_error = "Eroare la adaugare";
-  }
-
-  if (empty($student_an))
-  {
-    $add_error = "Eroare la adaugare";
-  }
-
-  if (empty($profil_an_id))
+  if (empty($student_name) || !isset($student_an) || !isset($profil_an_id))
   {
     $add_error = "Eroare la adaugare";
   }
