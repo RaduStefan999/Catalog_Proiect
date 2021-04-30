@@ -70,7 +70,7 @@
               <tr>
                 <td>'.$stundent[1].'</td>
                 <td>'.$stundent[2].'</td>
-                <td><a href="/note.php/?id='.$stundent[0].'" class="btn btn-secondary">Vezi note</button></td>
+                <td><a href="note.php?id='.$stundent[0].'" class="btn btn-secondary">Vezi note</a></td>
               </tr>
             ');
         }

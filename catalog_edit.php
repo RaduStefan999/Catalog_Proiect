@@ -16,7 +16,7 @@ require_once "./server/reassociate_profil.php";
 
 $materii_note_list = array();
 $profil_an_list = array();
-$stundet = 0;
+$student = 0;
 
 $URL_id = 0;
 
@@ -39,7 +39,7 @@ if($_SERVER["REQUEST_METHOD"] == "GET")
   {
     if ($row = mysqli_fetch_row($result))
     {
-        $stundet  = $row;
+        $student  = $row;
         mysqli_free_result($result);
     } 
   }
@@ -230,12 +230,12 @@ mysqli_close($link);
     <div class="form-row">
       <div class="form-group col-md-6">
         <label for="name">Nume</label>
-        <input type="text" class="form-control" id="student_name" placeholder="Nume" name="name" value="<?php echo($stundet[1]) ?>">
+        <input type="text" class="form-control" id="student_name" placeholder="Nume" name="name" value="<?php echo($student[1]) ?>">
       </div>
       
       <div class="form-group col-md-2">
         <label for="an">An</label>
-        <input type="number" class="form-control" id="student_an" placeholder="An" name="an" min="1" max="5" value="<?php echo($stundet[2]) ?>">
+        <input type="number" class="form-control" id="student_an" placeholder="An" name="an" min="1" max="5" value="<?php echo($student[2]) ?>">
       </div>
 
       <div class="form-group col-md-4">
@@ -245,7 +245,7 @@ mysqli_close($link);
             
             foreach ($profil_an_list as $profil_an)
             {
-                if ($profil_an[0] == $stundet[3])
+                if ($profil_an[0] == $student[3])
                 {
                   echo('<option selected value="'.$profil_an[0].'">'.$profil_an[1].'</option>');
                 }

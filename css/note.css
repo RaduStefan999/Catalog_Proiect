@@ -1,0 +1,32 @@
+.note_page {
+  padding: 6vw;
+  padding-top: 150px;
+}
+
+.note_field_label {
+  text-align: center;
+  font-weight: bold;
+}
+
+.note_field {
+  text-align: center;
+  font-weight: normal;
+  font-size: 30px;
+}
+
+.odd {
+  background-color: rgb(240, 240, 240) !important;
+}
+
+.even {
+  background-color: rgb(255, 255, 255) !important;
+}
+
+.dataTable {
+  border: 4px dotted rgb(185, 185, 185) !important;
+}
+
+.nume_student {
+  text-align: center;
+  margin-bottom: 80px;
+}
