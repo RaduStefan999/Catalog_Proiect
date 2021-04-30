@@ -8,6 +8,9 @@
   $materii_note_list = array();
   $student = 0;
 
+  $medie = 0;
+  $nr = 0;
+
   $URL_id = 0;
 
   if (isset($_GET['id'])) 
@@ -51,12 +54,20 @@
      // Fetch one and one row
      while ($row = mysqli_fetch_row($result)) {
        $materii_note_list[] = $row;
+
+       $medie += $row[2];
+       $nr++;
      }
      mysqli_free_result($result);
    }
    else
    {
      echo (mysqli_error($link));
+   }
+
+   if ($nr != 0)
+   {
+       $medie = $medie/$nr;
    }
 
 ?>
@@ -95,7 +106,8 @@
 
 <div class="note_page">
 
-   <h1 class="nume_student">Notele studentului <?php echo($student[1]) ?> </h1>
+  <h1 class="nume_student">Situatia <?php echo($student[1]) ?> </h1>
+  <div class="medie">Medie: <?php echo($medie) ?> </div>
 
   <table id="note_list">
       <thead>
