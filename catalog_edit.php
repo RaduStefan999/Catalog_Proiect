@@ -286,7 +286,7 @@ mysqli_close($link);
 
               <div class="form-group col-md-6 inline_form_inputs">
                 <label for="nota">Nota&nbsp;&nbsp;</label>
-                <input type="number" class="form-control" id="'.($materie_nota[4]).'_nota" placeholder="Nota" name="'.($materie_nota[4]).'_nota" min="0" max="10" value="'.($materie_nota[2]).'">
+                <input type="number" class="form-control" id="'.($materie_nota[4]).'_nota" placeholder="Nota" name="'.($materie_nota[4]).'_nota" min="0" max="10" step="0.01" value="'.($materie_nota[2]).'">
               </div>
 
               <div class="form-group col-md-6 inline_form_inputs">
