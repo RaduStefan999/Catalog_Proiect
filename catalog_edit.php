@@ -12,17 +12,82 @@ if((isset($_SESSION["loggedin"]) === false) || ($_SESSION["loggedin"] === false)
 // Include config file
 require_once "./server/config.php";
 
-/* Profiles list */
 
-$sql = "SELECT * FROM profil_an";
+$materii_note_list = array();
+$profil_an_list = array();
+$stundet = 0;
 
-if ($result = mysqli_query($link, $sql)) {
-  // Fetch one and one row
-  while ($row = mysqli_fetch_row($result)) {
-    $profil_an_list[] = $row;
+
+
+if($_SERVER["REQUEST_METHOD"] == "GET")
+{
+  /* Student select */
+
+  if (isset($_GET['id'])) 
+  {
+      $id = $_GET['id'];
+
+      $sql = "SELECT * FROM studenti WHERE id='$id' ";
+
+      if($result = (mysqli_query($link, $sql)))
+      {
+        if ($row = mysqli_fetch_row($result))
+        {
+            $stundet  = $row;
+            mysqli_free_result($result);
+        } 
+      }
+      else 
+      {
+        echo (mysqli_error($link));
+      }
+  } 
+  else 
+  {
+      echo("No id");
   }
-  mysqli_free_result($result);
+
+  /* Profiles list */
+
+  $sql = "SELECT * FROM profil_an";
+
+  if ($result = mysqli_query($link, $sql)) {
+    // Fetch one and one row
+    while ($row = mysqli_fetch_row($result)) {
+      $profil_an_list[] = $row;
+    }
+    mysqli_free_result($result);
+  }
+
+  /* Materii note list */
+
+  if (isset($_GET['id'])) 
+  {
+      $id = $_GET['id'];
+
+      $sql = "SELECT M.nume_materie, M.nr_credite, SN.nota, SN.promovat, SN.id
+              FROM materii M
+              LEFT JOIN student_has_note SN
+              ON M.id = SN.materie_id
+              WHERE SN.student_id = $id;
+      ";
+
+      if ($result = mysqli_query($link, $sql)) {
+        
+        // Fetch one and one row
+        while ($row = mysqli_fetch_row($result)) {
+          $materii_note_list[] = $row;
+        }
+        mysqli_free_result($result);
+      }
+      else
+      {
+        echo (mysqli_error($link));
+      }
+      
+  } 
 }
+
 
 mysqli_close($link);
 
@@ -83,17 +148,17 @@ mysqli_close($link);
 <div class="dashboard_container">
   <div class="dashboard">
 
-  <form>
+  <form id="add_student_form" action="<?php echo htmlspecialchars($_SERVER["PHP_SELF"]); ?>?id=<?php echo $_GET['id'] ?>" method="post">
 
     <div class="form-row">
       <div class="form-group col-md-6">
         <label for="name">Nume</label>
-        <input type="number" class="form-control" id="student_name" placeholder="Nume" name="nume">
+        <input type="text" class="form-control" id="student_name" placeholder="Nume" name="name" value="<?php echo($stundet[1]) ?>">
       </div>
       
       <div class="form-group col-md-2">
         <label for="an">An</label>
-        <input type="text" class="form-control" id="student_an" placeholder="An" name="an" min="1" max="5">
+        <input type="number" class="form-control" id="student_an" placeholder="An" name="an" min="1" max="5" value="<?php echo($stundet[2]) ?>">
       </div>
 
       <div class="form-group col-md-4">
@@ -103,7 +168,14 @@ mysqli_close($link);
             
             foreach ($profil_an_list as $profil_an)
             {
-                echo('<option value="'.$profil_an[0].'">'.$profil_an[1].'</option>');
+                if ($profil_an[0] == $stundet[2])
+                {
+                  echo('<option selected value="'.$profil_an[0].'">'.$profil_an[1].'</option>');
+                }
+                else 
+                {
+                  echo('<option value="'.$profil_an[0].'">'.$profil_an[1].'</option>');
+                }
             }
           
           ?>
@@ -111,43 +183,45 @@ mysqli_close($link);
       </div>
     </div>
 
-    <h3>Matematica</h3>
 
-    <div class="form-row">
+    <?php 
+            
+    foreach ($materii_note_list as $materie_nota)
+    {
 
-      <div class="form-group col-md-6 inline_form_inputs">
-        <label for="nota">Nota&nbsp;&nbsp;</label>
-        <input type="number" class="form-control" id="materia_1_nota" placeholder="Nota" name="materia_1_nota" min="0" max="10">
-      </div>
+      $options = "";
 
-      <div class="form-group col-md-6 inline_form_inputs">
-        <label for="promovat">Promovat&nbsp;&nbsp;</label>
-        <select class="form-control" name="materia_1_promovat" id="materia_1_promovat">
-          <option value="0">Nu</option>
-          <option value="1">Da</option>
-        </select>
-      </div>
+      if ($materie_nota[3] == 0)
+      {
+        $options = '<option selected value="0">Nu</option>
+                    <option value="1">Da</option>';
+      }
 
-    </div>
+      if ($materie_nota[3] == 1)
+      {
+        $options = '<option value="0">Nu</option>
+                    <option selected value="1">Da</option>';
+      }
 
-    <h3>Matematica</h3>
+      echo('<h3>'.($materie_nota[0]).'</h3>
 
-    <div class="form-row">
+            <div class="form-row">
 
-      <div class="form-group col-md-6 inline_form_inputs">
-        <label for="nota">Nota&nbsp;&nbsp;</label>
-        <input type="number" class="form-control" id="materia_1_nota" placeholder="Nota" name="materia_1_nota" min="0" max="10">
-      </div>
+              <div class="form-group col-md-6 inline_form_inputs">
+                <label for="nota">Nota&nbsp;&nbsp;</label>
+                <input type="number" class="form-control" id="'.($materie_nota[4]).'_nota" placeholder="Nota" name="'.($materie_nota[4]).'_nota" min="0" max="10" value="'.($materie_nota[2]).'">
+              </div>
 
-      <div class="form-group col-md-6 inline_form_inputs">
-        <label for="promovat">Promovat&nbsp;&nbsp;</label>
-        <select class="form-control" name="materia_1_promovat" id="materia_1_promovat">
-          <option value="0">Nu</option>
-          <option value="1">Da</option>
-        </select>
-      </div>
+              <div class="form-group col-md-6 inline_form_inputs">
+                <label for="promovat">Promovat&nbsp;&nbsp;</label>
+                <select class="form-control" name="'.($materie_nota[4]).'_promovat" id="'.($materie_nota[4]).'_promovat">'.$options.'</select>
+              </div>
 
-    </div>
+            </div>
+    ');
+    }
+              
+    ?>
     
     <button type="submit" class="btn btn-warning">Aply Changes</button>
   </form>
