@@ -1,11 +1,11 @@
 -- phpMyAdmin SQL Dump
--- version 5.0.2
+-- version 5.1.0
 -- https://www.phpmyadmin.net/
 --
--- Gazdă: 127.0.0.1
--- Timp de generare: apr. 26, 2021 la 12:21 AM
--- Versiune server: 10.4.13-MariaDB
--- Versiune PHP: 7.4.8
+-- Host: 127.0.0.1
+-- Generation Time: May 10, 2021 at 09:36 AM
+-- Server version: 10.4.18-MariaDB
+-- PHP Version: 7.3.28
 
 SET SQL_MODE = "NO_AUTO_VALUE_ON_ZERO";
 START TRANSACTION;
@@ -18,36 +18,39 @@ SET time_zone = "+00:00";
 /*!40101 SET NAMES utf8mb4 */;
 
 --
--- Bază de date: `catalog_studenti`
+-- Database: `catalog_studenti`
 --
 
 -- --------------------------------------------------------
 
 --
--- Structură tabel pentru tabel `materii`
+-- Table structure for table `materii`
 --
 
 CREATE TABLE `materii` (
   `id` int(50) NOT NULL,
-  `nume_materie` varchar(50) NOT NULL,
+  `nume_materie` varchar(100) NOT NULL,
   `nr_credite` int(50) NOT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
 
 --
--- Eliminarea datelor din tabel `materii`
+-- Dumping data for table `materii`
 --
 
 INSERT INTO `materii` (`id`, `nume_materie`, `nr_credite`) VALUES
-(1, 'matematica', 10),
-(2, 'inginerie', 8),
-(3, 'Istorie', 12),
-(4, 'analiza', 6),
-(5, 'robotica', 12);
+(6, 'Educatie Fizica', 5),
+(7, 'Algebra Liniara', 5),
+(8, 'Informatica Aplicata 1', 5),
+(9, 'Bazele Electrotehnicii 1', 5),
+(10, 'Analiza Matematica', 5),
+(11, 'Grafica pe Calculator', 5),
+(12, 'Matematici Speciale 1', 5),
+(14, 'Programarea Calculatoarelor si Limbaje de Programare', 5);
 
 -- --------------------------------------------------------
 
 --
--- Structură tabel pentru tabel `profesori`
+-- Table structure for table `profesori`
 --
 
 CREATE TABLE `profesori` (
@@ -58,16 +61,16 @@ CREATE TABLE `profesori` (
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
 
 --
--- Eliminarea datelor din tabel `profesori`
+-- Dumping data for table `profesori`
 --
 
 INSERT INTO `profesori` (`id`, `name`, `email`, `password`) VALUES
-(1, 'Mihalache Radu Stefan', 'radustefan1302@gmail.com', '$1$39yfdfNQ$Z4KqpNCApLH1tM0F3alLX0');
+(1, 'Andreea', 'andreea@gmail.com', '$1$1Kq1Q8Jr$yWsRWI5/bguOopLCSJHK9/');
 
 -- --------------------------------------------------------
 
 --
--- Structură tabel pentru tabel `profil_an`
+-- Table structure for table `profil_an`
 --
 
 CREATE TABLE `profil_an` (
@@ -76,20 +79,16 @@ CREATE TABLE `profil_an` (
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
 
 --
--- Eliminarea datelor din tabel `profil_an`
+-- Dumping data for table `profil_an`
 --
 
 INSERT INTO `profil_an` (`id`, `name`) VALUES
-(1, 'an1'),
-(3, 'an2'),
-(4, 'an3_electronica_aplicata'),
-(5, 'an3_microelectronica'),
-(6, 'an3_telecomunicatii');
+(7, 'Anul I semestrul 1');
 
 -- --------------------------------------------------------
 
 --
--- Structură tabel pentru tabel `profil_an_has_materii`
+-- Table structure for table `profil_an_has_materii`
 --
 
 CREATE TABLE `profil_an_has_materii` (
@@ -99,17 +98,23 @@ CREATE TABLE `profil_an_has_materii` (
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
 
 --
--- Eliminarea datelor din tabel `profil_an_has_materii`
+-- Dumping data for table `profil_an_has_materii`
 --
 
 INSERT INTO `profil_an_has_materii` (`id`, `profil_an_id`, `materie_id`) VALUES
-(5, 1, 3),
-(6, 1, 4);
+(7, 7, 7),
+(8, 7, 10),
+(9, 7, 9),
+(10, 7, 6),
+(11, 7, 11),
+(12, 7, 8),
+(13, 7, 12),
+(14, 7, 14);
 
 -- --------------------------------------------------------
 
 --
--- Structură tabel pentru tabel `studenti`
+-- Table structure for table `studenti`
 --
 
 CREATE TABLE `studenti` (
@@ -119,17 +124,10 @@ CREATE TABLE `studenti` (
   `profil_an_id` int(50) NOT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
 
---
--- Eliminarea datelor din tabel `studenti`
---
-
-INSERT INTO `studenti` (`id`, `name`, `an`, `profil_an_id`) VALUES
-(30, 'Mihalache Radu Stefan', 1, 1);
-
 -- --------------------------------------------------------
 
 --
--- Structură tabel pentru tabel `student_has_note`
+-- Table structure for table `student_has_note`
 --
 
 CREATE TABLE `student_has_note` (
@@ -141,37 +139,29 @@ CREATE TABLE `student_has_note` (
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
 
 --
--- Eliminarea datelor din tabel `student_has_note`
---
-
-INSERT INTO `student_has_note` (`id`, `student_id`, `materie_id`, `nota`, `promovat`) VALUES
-(5, 30, 3, 0, 0),
-(6, 30, 4, 0, 0);
-
---
--- Indexuri pentru tabele eliminate
+-- Indexes for dumped tables
 --
 
 --
--- Indexuri pentru tabele `materii`
+-- Indexes for table `materii`
 --
 ALTER TABLE `materii`
   ADD PRIMARY KEY (`id`);
 
 --
--- Indexuri pentru tabele `profesori`
+-- Indexes for table `profesori`
 --
 ALTER TABLE `profesori`
   ADD PRIMARY KEY (`id`);
 
 --
--- Indexuri pentru tabele `profil_an`
+-- Indexes for table `profil_an`
 --
 ALTER TABLE `profil_an`
   ADD PRIMARY KEY (`id`);
 
 --
--- Indexuri pentru tabele `profil_an_has_materii`
+-- Indexes for table `profil_an_has_materii`
 --
 ALTER TABLE `profil_an_has_materii`
   ADD PRIMARY KEY (`id`),
@@ -179,14 +169,14 @@ ALTER TABLE `profil_an_has_materii`
   ADD KEY `profil_an_id` (`profil_an_id`);
 
 --
--- Indexuri pentru tabele `studenti`
+-- Indexes for table `studenti`
 --
 ALTER TABLE `studenti`
   ADD PRIMARY KEY (`id`),
   ADD KEY `studenti_ibfk_1` (`profil_an_id`);
 
 --
--- Indexuri pentru tabele `student_has_note`
+-- Indexes for table `student_has_note`
 --
 ALTER TABLE `student_has_note`
   ADD PRIMARY KEY (`id`),
@@ -194,64 +184,64 @@ ALTER TABLE `student_has_note`
   ADD KEY `student_has_note_ibfk_2` (`student_id`);
 
 --
--- AUTO_INCREMENT pentru tabele eliminate
+-- AUTO_INCREMENT for dumped tables
 --
 
 --
--- AUTO_INCREMENT pentru tabele `materii`
+-- AUTO_INCREMENT for table `materii`
 --
 ALTER TABLE `materii`
-  MODIFY `id` int(50) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=6;
+  MODIFY `id` int(50) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=15;
 
 --
--- AUTO_INCREMENT pentru tabele `profesori`
+-- AUTO_INCREMENT for table `profesori`
 --
 ALTER TABLE `profesori`
   MODIFY `id` int(10) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=2;
 
 --
--- AUTO_INCREMENT pentru tabele `profil_an`
+-- AUTO_INCREMENT for table `profil_an`
 --
 ALTER TABLE `profil_an`
-  MODIFY `id` int(50) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=7;
+  MODIFY `id` int(50) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=8;
 
 --
--- AUTO_INCREMENT pentru tabele `profil_an_has_materii`
+-- AUTO_INCREMENT for table `profil_an_has_materii`
 --
 ALTER TABLE `profil_an_has_materii`
-  MODIFY `id` int(50) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=7;
+  MODIFY `id` int(50) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=15;
 
 --
--- AUTO_INCREMENT pentru tabele `studenti`
+-- AUTO_INCREMENT for table `studenti`
 --
 ALTER TABLE `studenti`
   MODIFY `id` int(50) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=31;
 
 --
--- AUTO_INCREMENT pentru tabele `student_has_note`
+-- AUTO_INCREMENT for table `student_has_note`
 --
 ALTER TABLE `student_has_note`
   MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=7;
 
 --
--- Constrângeri pentru tabele eliminate
+-- Constraints for dumped tables
 --
 
 --
--- Constrângeri pentru tabele `profil_an_has_materii`
+-- Constraints for table `profil_an_has_materii`
 --
 ALTER TABLE `profil_an_has_materii`
   ADD CONSTRAINT `profil_an_has_materii_ibfk_1` FOREIGN KEY (`materie_id`) REFERENCES `materii` (`id`),
   ADD CONSTRAINT `profil_an_has_materii_ibfk_2` FOREIGN KEY (`profil_an_id`) REFERENCES `profil_an` (`id`);
 
 --
--- Constrângeri pentru tabele `studenti`
+-- Constraints for table `studenti`
 --
 ALTER TABLE `studenti`
   ADD CONSTRAINT `studenti_ibfk_1` FOREIGN KEY (`profil_an_id`) REFERENCES `profil_an` (`id`) ON DELETE CASCADE;
 
 --
--- Constrângeri pentru tabele `student_has_note`
+-- Constraints for table `student_has_note`
 --
 ALTER TABLE `student_has_note`
   ADD CONSTRAINT `student_has_note_ibfk_1` FOREIGN KEY (`materie_id`) REFERENCES `materii` (`id`),
