@@ -80,7 +80,7 @@ mysqli_close($link);
 <!DOCTYPE html>
 <html lang="en">
 <head>
-  <title>Catalog View</title>
+  <title>Repartizare View</title>
   <meta charset="utf-8">
   <meta name="viewport" content="width=device-width, initial-scale=1">
   
@@ -157,7 +157,7 @@ mysqli_close($link);
 <div class="navbar">
 
   <div></div>
-  <div class="title">Catalog Studenti</div>
+  <div class="title">Repartizare Studenti</div>
   <div class="menu_buttons">
     <a href="./index.php">Studenti</a>
     <a href="./login.php">Profesori</a>

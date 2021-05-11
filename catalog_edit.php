@@ -15,6 +15,7 @@ require_once "./server/reassociate_profil.php";
 
 
 $materii_note_list = array();
+$specializari_list = array();
 $profil_an_list = array();
 $student = 0;
 
@@ -61,6 +62,18 @@ if($_SERVER["REQUEST_METHOD"] == "GET")
     mysqli_free_result($result);
   }
 
+  /* Specializari list */
+
+  $sql = "SELECT * FROM specializari";
+
+  if ($result = mysqli_query($link, $sql)) {
+    // Fetch one and one row
+    while ($row = mysqli_fetch_row($result)) {
+      $specializari_list[] = $row;
+    }
+    mysqli_free_result($result);
+  }
+
   /* Materii note list */
 
   $sql = "SELECT M.nume_materie, M.nr_credite, SN.nota, SN.promovat, SN.id
@@ -93,9 +106,18 @@ if($_SERVER["REQUEST_METHOD"] == "POST")
   $student_an = trim($_POST["an"]);
   $profil_an_id = trim($_POST["profil_an"]);
 
+  $student_optiunea_1 = trim($_POST["optiunea_1"]);
+  $student_optiunea_2 = trim($_POST["optiunea_2"]);
+  $student_optiunea_3 = trim($_POST["optiunea_3"]);
+
   $add_error = "";
 
-  if (empty($student_name) || !isset($student_an) || !isset($profil_an_id))
+  if (empty($student_name) || !isset($student_an) || !isset($profil_an_id) || !isset($student_optiunea_1) || !isset($student_optiunea_2) || !isset($student_optiunea_3))
+  {
+    $add_error = "Eroare la editare";
+  }
+
+  if (!($student_optiunea_1 != $student_optiunea_2 && $student_optiunea_2 != $student_optiunea_3 && $student_optiunea_1 != $student_optiunea_3))
   {
     $add_error = "Eroare la editare";
   }
@@ -114,7 +136,9 @@ if($_SERVER["REQUEST_METHOD"] == "POST")
         mysqli_free_result($result);
     }
 
-    $sql = "UPDATE studenti SET name = '$student_name', an = $student_an, profil_an_id = $profil_an_id WHERE id = $URL_id";
+    $sql = "UPDATE studenti SET name = '$student_name', an = $student_an, profil_an_id = $profil_an_id,
+           optiunea_1 = $student_optiunea_1, optiunea_2 = $student_optiunea_2, optiunea_3 = $student_optiunea_3 
+           WHERE id = $URL_id";
     
     if(!(mysqli_query($link, $sql)))
     {
@@ -173,7 +197,7 @@ mysqli_close($link);
 <!DOCTYPE html>
 <html lang="en">
 <head>
-  <title>Catalog Edit</title>
+  <title>Repartizare Edit</title>
   <meta charset="utf-8">
   <meta name="viewport" content="width=device-width, initial-scale=1">
   
@@ -196,7 +220,7 @@ mysqli_close($link);
 <div class="navbar">
 
   <div></div>
-  <div class="title">Catalog Studenti</div>
+  <div class="title">Repartizare Studenti</div>
   <div class="menu_buttons">
     <a href="./index.php">Studenti</a>
     <a href="./login.php">Profesori</a>
@@ -299,6 +323,67 @@ mysqli_close($link);
     }
               
     ?>
+
+    <div class="form-row">
+
+      <div class="form-group col-md-4">
+      <label for="name">Optiunea 1</label>
+        <select class="form-control" name="optiunea_1" id="student_optiunea_1">
+            <?php 
+              foreach ($specializari_list as $specializare)
+              {
+                if ($specializare[0] == $student[5])
+                {
+                  echo('<option selected value="'.$specializare[0].'">'.$specializare[1].'</option>');
+                }
+                else 
+                {
+                  echo('<option value="'.$specializare[0].'">'.$specializare[1].'</option>');
+                }
+              }
+            ?>
+        </select>
+      </div>
+
+      <div class="form-group col-md-4">
+      <label for="name">Optiunea 2</label>
+        <select class="form-control" name="optiunea_2" id="student_optiunea_2">
+        <?php 
+              foreach ($specializari_list as $specializare)
+              {
+                if ($specializare[0] == $student[6])
+                {
+                  echo('<option selected value="'.$specializare[0].'">'.$specializare[1].'</option>');
+                }
+                else 
+                {
+                  echo('<option value="'.$specializare[0].'">'.$specializare[1].'</option>');
+                }
+              }
+            ?>
+        </select>
+      </div>
+
+      <div class="form-group col-md-4">
+        <label for="name">Optiunea 3</label>
+        <select class="form-control" name="optiunea_3" id="student_optiunea_3">
+            <?php
+              foreach ($specializari_list as $specializare)
+              {
+                if ($specializare[0] == $student[7])
+                {
+                  echo('<option selected value="'.$specializare[0].'">'.$specializare[1].'</option>');
+                }
+                else 
+                {
+                  echo('<option value="'.$specializare[0].'">'.$specializare[1].'</option>');
+                }
+              }
+            ?>
+        </select>
+      </div>
+
+    </div>
     
     <button type="submit" class="btn btn-warning">Aply Changes</button>
   </form>

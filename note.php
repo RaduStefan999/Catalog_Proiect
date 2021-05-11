@@ -96,7 +96,7 @@
 <div class="navbar">
 
   <div></div>
-  <div class="title">Catalog Studenti</div>
+  <div class="title">Repartizare Studenti</div>
   <div class="menu_buttons">
     <a href="./index.php">Studenti</a>
     <a href="./login.php">Profesori</a>

@@ -2,27 +2,18 @@
 
   // Include config file
   require_once "./server/config.php";
+  require_once "./server/repartizare.php";
 
-  /* Students list */
+  // Reface repartizarea
 
-  $student_list = array();
-
-  $sql = "SELECT * FROM studenti";
-
-  if ($result = mysqli_query($link, $sql)) {
-    // Fetch one and one row
-    while ($row = mysqli_fetch_row($result)) {
-      $student_list[] = $row;
-    }
-    mysqli_free_result($result);
-  }
+  $list = repartizare($link);
 
 ?>
 
 <!DOCTYPE html>
 <html lang="en">
 <head>
-  <title>Catalog</title>
+  <title>Repartizare</title>
   <meta charset="utf-8">
   <meta name="viewport" content="width=device-width, initial-scale=1">
   
@@ -43,7 +34,7 @@
 <div class="navbar">
 
   <div></div>
-  <div class="title">Catalog Studenti</div>
+  <div class="title">Repartizare Studenti</div>
   <div class="menu_buttons">
     <a href="./index.php">Studenti</a>
     <a href="./login.php">Profesori</a>
@@ -56,7 +47,9 @@
       <thead>
           <tr>
               <th>Nume</th>
-              <th>An</th>
+              <th>Credite</th>
+              <th>Media</th>
+              <th>Specializare</th>
               <th>Note</th>
           </tr>
       </thead>
@@ -64,15 +57,17 @@
 
         <?php 
         
-        foreach ($student_list as $stundent)
+        for ($i = 0; $i < count($list->studenti); $i++)
         {
             echo('  
-              <tr>
-                <td>'.$stundent[1].'</td>
-                <td>'.$stundent[2].'</td>
-                <td><a href="note.php?id='.$stundent[0].'" class="btn btn-secondary">Vezi note</a></td>
-              </tr>
-            ');
+            <tr>
+              <td>'.$list->studenti[$i][1].'</td>
+              <td>'.$list->credits[$i].'</td>
+              <td>'.$list->medii[$i].'</td>
+              <td>'.$list->specializari[$i].'</td>
+              <td><a href="note.php?id='.$list->studenti[$i][0].'" class="btn btn-secondary">Vezi note</a></td>
+            </tr>
+          ');
         }
         
         ?>
