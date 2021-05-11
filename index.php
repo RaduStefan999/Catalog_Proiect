@@ -57,6 +57,7 @@
           <tr>
               <th>Nume</th>
               <th>An</th>
+              <th>Specializare</th>
               <th>Note</th>
           </tr>
       </thead>
@@ -70,6 +71,7 @@
               <tr>
                 <td>'.$stundent[1].'</td>
                 <td>'.$stundent[2].'</td>
+                <td>'.$stundent[4].'</td>
                 <td><a href="note.php?id='.$stundent[0].'" class="btn btn-secondary">Vezi note</a></td>
               </tr>
             ');

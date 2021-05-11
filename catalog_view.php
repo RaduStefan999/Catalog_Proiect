@@ -49,6 +49,7 @@ if($_SERVER["REQUEST_METHOD"] == "POST")
 
   $student_name = trim($_POST["name"]);
   $student_an = trim($_POST["an"]);
+  $student_specializare = trim($_POST["specializare"]);
   $profil_an_id = trim($_POST["profil_an"]);
 
   $add_error = "";
@@ -60,7 +61,7 @@ if($_SERVER["REQUEST_METHOD"] == "POST")
 
   if (empty($add_error))
   {
-    $sql = "INSERT INTO studenti (name, an, profil_an_id) VALUES ('$student_name', '$student_an', '$profil_an_id')";
+    $sql = "INSERT INTO studenti (name, an, profil_an_id, specializare) VALUES ('$student_name', '$student_an', '$profil_an_id', '$student_specializare')";
     
     if(!(mysqli_query($link, $sql)))
     {
@@ -122,6 +123,17 @@ mysqli_close($link);
           <div class="form-group">
             <label for="an" class="col-form-label">An:</label>
             <input type="number" class="form-control" id="student_an" name="an" min="1" max="5">
+          </div>
+
+          <div class="form-group">
+            <label for="student_specializare" class="col-form-label">Specializare:</label>
+
+            <select class="form-control" name="specializare" id="student_specializare">
+              <option value=""></option>
+              <option value="Microlectronica">Microlectronica</option>
+              <option value="Electronica aplicata">Electronica aplicata</option>
+              <option value="TST">TST</option>
+            </select>
           </div>
 
           <div class="form-group">

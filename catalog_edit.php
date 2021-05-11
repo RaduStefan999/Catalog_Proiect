@@ -91,6 +91,7 @@ if($_SERVER["REQUEST_METHOD"] == "POST")
 
   $student_name = trim($_POST["name"]);
   $student_an = trim($_POST["an"]);
+  $student_specializare = trim($_POST["specializare"]);
   $profil_an_id = trim($_POST["profil_an"]);
 
   $add_error = "";
@@ -114,7 +115,7 @@ if($_SERVER["REQUEST_METHOD"] == "POST")
         mysqli_free_result($result);
     }
 
-    $sql = "UPDATE studenti SET name = '$student_name', an = $student_an, profil_an_id = $profil_an_id WHERE id = $URL_id";
+    $sql = "UPDATE studenti SET name = '$student_name', an = $student_an, profil_an_id = $profil_an_id, specializare = '$student_specializare' WHERE id = $URL_id";
     
     if(!(mysqli_query($link, $sql)))
     {
@@ -228,7 +229,7 @@ mysqli_close($link);
   <form id="add_student_form" action="<?php echo htmlspecialchars($_SERVER["PHP_SELF"]); ?>?id=<?php echo $_GET['id'] ?>" method="post">
 
     <div class="form-row">
-      <div class="form-group col-md-6">
+      <div class="form-group col-md-5">
         <label for="name">Nume</label>
         <input type="text" class="form-control" id="student_name" placeholder="Nume" name="name" value="<?php echo($student[1]) ?>">
       </div>
@@ -238,7 +239,7 @@ mysqli_close($link);
         <input type="number" class="form-control" id="student_an" placeholder="An" name="an" min="1" max="5" value="<?php echo($student[2]) ?>">
       </div>
 
-      <div class="form-group col-md-4">
+      <div class="form-group col-md-3">
         <label for="profil_an">Profil si an</label>
         <select class="form-control" name="profil_an" id="profil_an">
           <?php 
@@ -256,6 +257,18 @@ mysqli_close($link);
             }
           
           ?>
+        </select>
+      </div>
+
+      <div class="form-group col-md-2">
+        <label for="specializare">Specializare</label>
+        <select class="form-control" name="specializare" id="student_specializare">
+  
+            <option value=""  <?php if ($student[4] == "")  echo("selected"); ?> ></option>
+            <option value="Microlectronica" <?php if ($student[4] == "Microlectronica")  echo("selected"); ?> >Microlectronica</option>
+            <option value="Electronica aplicata" <?php if ($student[4] == "Electronica aplicata")  echo("selected"); ?> >Electronica aplicata</option>
+            <option value="TST" <?php if ($student[4] == "TST")  echo("selected"); ?> >TST</option>
+
         </select>
       </div>
     </div>
